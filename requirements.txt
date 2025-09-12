@@ -1,0 +1,11 @@
+certifi==2024.8.30
+charset-normalizer==3.3.2
+idna==3.8
+requests==2.32.3
+urllib3==2.2.3
+websockets==12.0
+python-dotenv
+psycopg2-binary
+load_dotenv
+google-genai
+boto-3

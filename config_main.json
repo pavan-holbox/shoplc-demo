@@ -1,0 +1,205 @@
+{
+    "type": "Settings",
+    "flags": {
+        "history": true
+    },
+    "audio": {
+        "input": {
+            "encoding": "mulaw",
+            "sample_rate": 8000
+        },
+        "output": {
+            "encoding": "mulaw",
+            "sample_rate": 8000,
+            "container": "none"
+        }
+    },
+    "agent": {
+        "language": "en",
+        "listen": {
+            "provider": {
+                "type": "deepgram",
+                "model": "nova-3"
+            }
+        },
+        "think": {
+            "provider": {
+                "type": "open_ai",
+                "model": "gpt-4o-mini",
+                "temperature": 0.5
+            },
+            "prompt": "You are an AI assistant handling customer service for a E-commerece called ** Shop LC **. Your task is to assist customers with the Status of their  Orders OR Status of Refunds of Orders. Enquire the user about which they are looking for like regarding their orders or refunds. Get the required information to get to know which order/ refund they are referring to, utilise the given methods such that you can get the more details from them. all while maintaining a **friendly and human-like tone** over the phone. Keep the responses simple and conversational as if speaking over the phone .     ###IMPORTANT : while listing the order information or refund information  to the  customer, Dont' provide numbering isntead use the sentence based solution and Do not use any Markdown formatting (like **bold**) when presenting response to the customer.      ### Functions and Their Descriptions: - ** get_customer_id_by_mobile ** (mobile_number) - Fetches the customer ID using the provided mobile number.** get_recent_orders_by_customer_id ** (customer_id, limit=2) - Retrieves the most recent orders for a given customer ID, limited to a specified number.** get_orders_by_customer_id_and_date **(customer_id, order_date). - Retrieves all orders for a given customer ID within a date range.** get_order_by_product_name **(customer_id, product_name) - Finds the order ID(s) for a given product name under a specific customer.** get_recent_refunds_by_customer_id **(customer_id, limit=5) - Retrieves the most recent refund records for a given customer ID.** get_recent_refunds_by_product_name **(customer_id, date=None, product_name=None) - Retrieves refund details either by date or by product name under a specific customer.** get_refund_by_order_id ** (order_id) - Retrieves refund information for a specific order ID.  Here you have to understand the parameters to be passed to the fucntions as in order to know the user orders , you can get the customer id and using that you can get information from other functions and some data like prodcut name or dates, you can confirm from user about it. Also you have to know that the functions are interlinked so understand the methods correctly like which to call and when to call. "
+            ,
+
+        "functions": [
+            {
+                "name": "get_customer_id_by_mobile",
+                "description": "Fetch the customer ID using the provided mobile number.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "mobile_number": {
+                            "type": "string",
+                            "description": "The customer's mobile phone number. (should always contain the 10 digits. remember this)"
+                        }
+                    },
+                    "required": [
+                        "mobile_number"
+                    ]
+                }
+            },
+            {
+                "name": "get_recent_orders_by_customer_id",
+                "description": "Retrieve the most recent orders for a given customer ID",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "customer_id": {
+                            "type": "string",
+                            "description": "The unique identifier of the customer."
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": " number of recent orders to fetch."
+                        }
+                    },
+                    "required": [
+                        "customer_id"
+                    ]
+                }
+            },
+            {
+                "name": "get_orders_by_customer_id_and_date",
+                "description": "Retrieve all orders for a given customer ID within a date range.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "customer_id": {
+                            "type": "string",
+                            "description": "The unique identifier of the customer."
+                        },
+                        "order_date": {
+                            "type": "string",
+                            "description": "The order date (YYYY-MM-DD) of the range."
+                        }
+                    },
+                    "required": [
+                        "customer_id",
+                        "start_date",
+                        "end_date"
+                    ]
+                }
+            },
+            {
+                "name": "get_order_by_product_name",
+                "description": "Find order IDs for a given product name under a specific customer.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "customer_id": {
+                            "type": "string",
+                            "description": "The unique identifier of the customer."
+                        },
+                        "product_name": {
+                            "type": "string",
+                            "description": "Name of the product to search for."
+                        }
+                    },
+                    "required": [
+                        "customer_id",
+                        "product_name"
+                    ]
+                }
+            },
+            {
+                "name": "get_recent_refunds_by_customer_id",
+                "description": "Retrieve the most recent refund records for a given customer ID.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "customer_id": {
+                            "type": "string",
+                            "description": "The unique identifier of the customer."
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Maximum number of recent refunds to fetch."
+                        }
+                    },
+                    "required": [
+                        "customer_id"
+                    ]
+                }
+            },
+            {
+                "name": "get_recent_refunds_by_product_name",
+                "description": "Retrieve refund details either product name under a specific customer.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "customer_id": {
+                            "type": "string",
+                            "description": "The unique identifier of the customer."
+                        },
+                        "product_name": {
+                            "type": "string",
+                            "description": "Name of the product to search refund records for."
+                        }
+                    },
+                    "required": [
+                        "customer_id"
+                    ]
+                }
+            },
+            {
+                "name": "get_refund_by_order_id",
+                "description": "Retrieve refund information for a specific order ID.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "order_id": {
+                            "type": "string",
+                            "description": "The unique identifier of the order."
+                        }
+                    },
+                    "required": [
+                        "order_id"
+                    ]
+                }
+            },
+            {
+                "name": "get_order_by_order_id",
+                "description": "Retrieve order information for a specific order ID.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "order_id": {
+                            "type": "string",
+                            "description": "The unique identifier of the order."
+                        }
+                    },
+                    "required": [
+                        "order_id"
+                    ]
+                }
+
+            }
+        ]
+            },
+        "speak": {
+            "provider": {
+                "type": "deepgram",
+                "model": "aura-2-thalia-en"
+            }
+        },
+        "greeting": "Hi there! Welcome to ShopLC. Can I have your Name Please?"
+    }
+    }
+
+
+
+
+
+
+
+
