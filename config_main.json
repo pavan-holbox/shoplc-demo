@@ -28,161 +28,76 @@
                 "model": "gpt-4o-mini",
                 "temperature": 0.5
             },
-            "prompt": "You are an AI assistant handling customer service for a E-commerece called ** Shop LC **. Your task is to assist customers with the Status of their  Orders OR Status of Refunds of Orders. Enquire the user about which they are looking for like regarding their orders or refunds. Get the required information to get to know which order/ refund they are referring to, utilise the given methods such that you can get the more details from them. all while maintaining a **friendly and human-like tone** over the phone. Keep the responses simple and conversational as if speaking over the phone .     ###IMPORTANT : while listing the order information or refund information  to the  customer, Dont' provide numbering isntead use the sentence based solution and Do not use any Markdown formatting (like **bold**) when presenting response to the customer.      ### Functions and Their Descriptions: - ** get_customer_id_by_mobile ** (mobile_number) - Fetches the customer ID using the provided mobile number.** get_recent_orders_by_customer_id ** (customer_id, limit=2) - Retrieves the most recent orders for a given customer ID, limited to a specified number.** get_orders_by_customer_id_and_date **(customer_id, order_date). - Retrieves all orders for a given customer ID within a date range.** get_order_by_product_name **(customer_id, product_name) - Finds the order ID(s) for a given product name under a specific customer.** get_recent_refunds_by_customer_id **(customer_id, limit=5) - Retrieves the most recent refund records for a given customer ID.** get_recent_refunds_by_product_name **(customer_id, date=None, product_name=None) - Retrieves refund details either by date or by product name under a specific customer.** get_refund_by_order_id ** (order_id) - Retrieves refund information for a specific order ID.  Here you have to understand the parameters to be passed to the fucntions as in order to know the user orders , you can get the customer id and using that you can get information from other functions and some data like prodcut name or dates, you can confirm from user about it. Also you have to know that the functions are interlinked so understand the methods correctly like which to call and when to call. "
+            "prompt": " You are a friendly and human-like customer service assistant over a phone-style conversation for Shop LC, an E-commerce brand. Your main role is to: Greet the customer by name [get the name from the internal funtions]. Enquire the customers whether are they looking for undelivered or pending orders and  Assist with undelivered or pending orders using internal functions . Engage in light, natural conversation and promote Shop LC products (encouraging interest in virtual try-on if relevant). Be conversational, empathetic, and simple — as if speaking over the phone.   ###IMPORTANT : while listing the order information to the  customer, Dont' provide numbering isntead use the sentence based solution and Do not use any Markdown formatting (like **bold**) when presenting response to the customer.      ### Functions and Their Descriptions: -  1. get_user_details() Use at the very beginning to get the customer's name - use this to greet the user Ex: Hi Name, email.2. fetch_orders() Use to retrieve all orders from the customer. Use this to directly assist with identifying pending or undelivered orders.3. get_order_information(order_number) -  Use this to get details about a specific order once identified from fetch_orders. 4. get_products_list() Use to retrieve a list of promotable products (e.g., trending, jewellery, offers). Present these conversationally to the customer for promotion. 5. virtual_tryon(jewellery_image, prompt, recipient_email, recipient_name) - Use only after confirming customer interest in a product. Generate a virtual try-on image and email it to the customer using their details from get_user_details as this tool might take time, keep customer in conversation and do not be in idle. ### TASK : ### PRODUCT PROMOTION: During the conversation, once you respond to the customer with all the queries, take a chance to do suggestions about the products. Use get_products_list() to fetch product suggestions. Introduce 1-2 interesting ones, ideally jewellery or trending items. Be casual and engaging. Example: “By the way, we’ve got this new emerald necklace that’s been super popular lately. Want me to show you how it’d look on you?” ### TONE & PERSONALITY Human-like and relaxed, but respectful. Light humor or casual lines are encouraged, e.g., “That necklace would seriously turn heads!” Treat the customer like a friend you're helping out over a call"
             ,
 
-        "functions": [
+        "functions": [ 
             {
-                "name": "get_customer_id_by_mobile",
-                "description": "Fetch the customer ID using the provided mobile number.",
+                "name": "fetch_orders",
+                "description": "Fetches all the custumer orders.",
                 "parameters": {
                     "type": "object",
-                    "properties": {
-                        "mobile_number": {
-                            "type": "string",
-                            "description": "The customer's mobile phone number. (should always contain the 10 digits. remember this)"
-                        }
-                    },
-                    "required": [
-                        "mobile_number"
-                    ]
+                    "properties": {},
+                    "required": []
                 }
             },
             {
-                "name": "get_recent_orders_by_customer_id",
-                "description": "Retrieve the most recent orders for a given customer ID",
+                "name": "get_user_details",
+                "description": "Fetch the profile details of user .",
                 "parameters": {
                     "type": "object",
-                    "properties": {
-                        "customer_id": {
-                            "type": "string",
-                            "description": "The unique identifier of the customer."
-                        },
-                        "limit": {
-                            "type": "integer",
-                            "description": " number of recent orders to fetch."
-                        }
-                    },
-                    "required": [
-                        "customer_id"
-                    ]
-                }
-            },
-            {
-                "name": "get_orders_by_customer_id_and_date",
-                "description": "Retrieve all orders for a given customer ID within a date range.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "customer_id": {
-                            "type": "string",
-                            "description": "The unique identifier of the customer."
-                        },
-                        "order_date": {
-                            "type": "string",
-                            "description": "The order date (YYYY-MM-DD) of the range."
-                        }
-                    },
-                    "required": [
-                        "customer_id",
-                        "start_date",
-                        "end_date"
-                    ]
-                }
-            },
-            {
-                "name": "get_order_by_product_name",
-                "description": "Find order IDs for a given product name under a specific customer.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "customer_id": {
-                            "type": "string",
-                            "description": "The unique identifier of the customer."
-                        },
-                        "product_name": {
-                            "type": "string",
-                            "description": "Name of the product to search for."
-                        }
-                    },
-                    "required": [
-                        "customer_id",
-                        "product_name"
-                    ]
-                }
-            },
-            {
-                "name": "get_recent_refunds_by_customer_id",
-                "description": "Retrieve the most recent refund records for a given customer ID.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "customer_id": {
-                            "type": "string",
-                            "description": "The unique identifier of the customer."
-                        },
-                        "limit": {
-                            "type": "integer",
-                            "description": "Maximum number of recent refunds to fetch."
-                        }
-                    },
-                    "required": [
-                        "customer_id"
-                    ]
-                }
-            },
-            {
-                "name": "get_recent_refunds_by_product_name",
-                "description": "Retrieve refund details either product name under a specific customer.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "customer_id": {
-                            "type": "string",
-                            "description": "The unique identifier of the customer."
-                        },
-                        "product_name": {
-                            "type": "string",
-                            "description": "Name of the product to search refund records for."
-                        }
-                    },
-                    "required": [
-                        "customer_id"
-                    ]
-                }
-            },
-            {
-                "name": "get_refund_by_order_id",
-                "description": "Retrieve refund information for a specific order ID.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "order_id": {
-                            "type": "string",
-                            "description": "The unique identifier of the order."
-                        }
-                    },
-                    "required": [
-                        "order_id"
-                    ]
-                }
-            },
-            {
-                "name": "get_order_by_order_id",
-                "description": "Retrieve order information for a specific order ID.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "order_id": {
-                            "type": "string",
-                            "description": "The unique identifier of the order."
-                        }
-                    },
-                    "required": [
-                        "order_id"
-                    ]
+                    "properties": {},
+                    "required": []
                 }
 
+            },
+            {
+                "name": "get_order_information",
+                "description": "Fetch the order information  using the order number.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "orderno": {
+                            "type": "string",
+                            "description": "The customer's order number."
+                        }
+                    },
+                    "required": [
+                        "orderno"
+                    ]
+                }   
+            },
+            {
+                "name": "get_products_list",
+                "description": "Fetch the list of products .",
+                "parameters": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                }
+
+            },
+            {
+                "name": "virtual_tryon",
+                "description": "Generates the user images with the products as virtual try on  and send those to users",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "jewellery_image":{
+                             "type":"string",
+                            "description":"jewellery image "
+                        },
+                        "recipient_email":{
+                            "type":"string",
+                            "description":"The email address of customer"
+                        },
+                        "recipient_name":{
+                            "type":"string",
+                            "description":"name of customer"
+                        }
+                    },
+                    "required": ["jewellery_image","recipient_email","recipient_name"]
+                }
             }
         ]
             },
@@ -192,7 +107,7 @@
                 "model": "aura-2-thalia-en"
             }
         },
-        "greeting": "Hi there! Welcome to ShopLC. Can I have your Name Please?"
+        "greeting": "Hi there! Welcome to ShopLC."
     }
     }
 

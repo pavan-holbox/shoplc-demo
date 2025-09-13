@@ -1,0 +1,248 @@
+{
+    "CA7f267c52969acf21549a5c758d410e6e": {
+        "user_details": [
+            {
+                "customer_id": "CUST1001",
+                "full_name": "Dhruv",
+                "phone_number": "8334263904",
+                "email": "dhruv@holbox.ai",
+                "shipping_address": "123 Main St, Delhi",
+                "created_at": "2025-08-29T12:41:08.336906",
+                "last_active": "2025-08-20T00:00:00",
+                "loyalty_tier": "Gold",
+                "notes": "Prefers COD"
+            }
+        ],
+        "orders": {
+            "ReturnCode": 1,
+            "Message": "Success",
+            "Data": [
+                {
+                    "SalesOrderCode": "DV00044549",
+                    "TotalGrossAmount": 54.11,
+                    "OrderDate": "2025-09-04T06:27:01",
+                    "OrderStatus": "Dispatched",
+                    "ImageURL": "https://slcatsapi.tjc.tv/api/filehandler/getimage?id=7340138"
+                },
+                {
+                    "SalesOrderCode": "DV00044547",
+                    "TotalGrossAmount": 174.27,
+                    "OrderDate": "2025-09-04T06:22:57",
+                    "OrderStatus": "INVOICED",
+                    "ImageURL": "https://slcatsapi.tjc.tv/api/filehandler/getimage?id=6886830"
+                }
+            ]
+        }
+    },
+    "CAb08f79784d5ddc9104f98110937f0805": {
+        "user_details": [
+            {
+                "customer_id": "CUST1001",
+                "full_name": "Dhruv",
+                "phone_number": "8334263904",
+                "email": "dhruv@holbox.ai",
+                "shipping_address": "123 Main St, Delhi",
+                "created_at": "2025-08-29T12:41:08.336906",
+                "last_active": "2025-08-20T00:00:00",
+                "loyalty_tier": "Gold",
+                "notes": "Prefers COD"
+            }
+        ],
+        "orders": {
+            "ReturnCode": 1,
+            "Message": "Success",
+            "Data": [
+                {
+                    "SalesOrderCode": "DV00044549",
+                    "TotalGrossAmount": 54.11,
+                    "OrderDate": "2025-09-04T06:27:01",
+                    "OrderStatus": "Dispatched",
+                    "ImageURL": "https://slcatsapi.tjc.tv/api/filehandler/getimage?id=7340138"
+                },
+                {
+                    "SalesOrderCode": "DV00044547",
+                    "TotalGrossAmount": 174.27,
+                    "OrderDate": "2025-09-04T06:22:57",
+                    "OrderStatus": "INVOICED",
+                    "ImageURL": "https://slcatsapi.tjc.tv/api/filehandler/getimage?id=6886830"
+                }
+            ]
+        }
+    },
+    "CA487965467493635706c340d94fb1d348": {
+        "user_details": [
+            {
+                "customer_id": "CUST1001",
+                "full_name": "Dhruv",
+                "phone_number": "8334263904",
+                "email": "dhruv@holbox.ai",
+                "shipping_address": "123 Main St, Delhi",
+                "created_at": "2025-08-29T12:41:08.336906",
+                "last_active": "2025-08-20T00:00:00",
+                "loyalty_tier": "Gold",
+                "notes": "Prefers COD"
+            }
+        ],
+        "orders": {
+            "ReturnCode": 1,
+            "Message": "Success",
+            "Data": [
+                {
+                    "SalesOrderCode": "DV00044549",
+                    "TotalGrossAmount": 54.11,
+                    "OrderDate": "2025-09-04T06:27:01",
+                    "OrderStatus": "Dispatched",
+                    "ImageURL": "https://slcatsapi.tjc.tv/api/filehandler/getimage?id=7340138"
+                },
+                {
+                    "SalesOrderCode": "DV00044547",
+                    "TotalGrossAmount": 174.27,
+                    "OrderDate": "2025-09-04T06:22:57",
+                    "OrderStatus": "INVOICED",
+                    "ImageURL": "https://slcatsapi.tjc.tv/api/filehandler/getimage?id=6886830"
+                }
+            ]
+        }
+    },
+    "CA36e32cbdc443ce26689327ad53be2f86": {
+        "user_details": [
+            {
+                "customer_id": "CUST1001",
+                "full_name": "Dhruv",
+                "phone_number": "8334263904",
+                "email": "dhruv@holbox.ai",
+                "shipping_address": "123 Main St, Delhi",
+                "created_at": "2025-08-29T12:41:08.336906",
+                "last_active": "2025-08-20T00:00:00",
+                "loyalty_tier": "Gold",
+                "notes": "Prefers COD"
+            }
+        ],
+        "orders": {
+            "ReturnCode": 1,
+            "Message": "Success",
+            "Data": [
+                {
+                    "SalesOrderCode": "DV00044549",
+                    "TotalGrossAmount": 54.11,
+                    "OrderDate": "2025-09-04T06:27:01",
+                    "OrderStatus": "Dispatched",
+                    "ImageURL": "https://slcatsapi.tjc.tv/api/filehandler/getimage?id=7340138"
+                },
+                {
+                    "SalesOrderCode": "DV00044547",
+                    "TotalGrossAmount": 174.27,
+                    "OrderDate": "2025-09-04T06:22:57",
+                    "OrderStatus": "INVOICED",
+                    "ImageURL": "https://slcatsapi.tjc.tv/api/filehandler/getimage?id=6886830"
+                }
+            ]
+        }
+    },
+    "CA2e34e366f2206789ff5a61dedda6bce6": {
+        "user_details": [
+            {
+                "customer_id": "CUST1001",
+                "full_name": "Dhruv",
+                "phone_number": "8334263904",
+                "email": "dhruv@holbox.ai",
+                "shipping_address": "123 Main St, Delhi",
+                "created_at": "2025-08-29T12:41:08.336906",
+                "last_active": "2025-08-20T00:00:00",
+                "loyalty_tier": "Gold",
+                "notes": "Prefers COD"
+            }
+        ],
+        "orders": {
+            "ReturnCode": 1,
+            "Message": "Success",
+            "Data": [
+                {
+                    "SalesOrderCode": "DV00044549",
+                    "TotalGrossAmount": 54.11,
+                    "OrderDate": "2025-09-04T06:27:01",
+                    "OrderStatus": "Dispatched",
+                    "ImageURL": "https://slcatsapi.tjc.tv/api/filehandler/getimage?id=7340138"
+                },
+                {
+                    "SalesOrderCode": "DV00044547",
+                    "TotalGrossAmount": 174.27,
+                    "OrderDate": "2025-09-04T06:22:57",
+                    "OrderStatus": "INVOICED",
+                    "ImageURL": "https://slcatsapi.tjc.tv/api/filehandler/getimage?id=6886830"
+                }
+            ]
+        }
+    },
+    "CA2e34e366f2206789ff5a61dedda6bce6:DV00044547": {
+        "order_info": {
+            "ReturnCode": 1,
+            "Message": "Success",
+            "Data": [
+                {
+                    "SalesOrderCode": "DV00044547",
+                    "OrderStatus": "INVOICED",
+                    "TotalGrossAmount": "174.27",
+                    "OrderDate": "09/04/2025 06:22:57",
+                    "ItemCode": "6886830",
+                    "ItemName": "Headless testing Bed Scrunchie 360° Fitted Sheet Tightener",
+                    "ItemStatus": "PRINTED",
+                    "TrackingNumber": null,
+                    "NarvarStatus": null,
+                    "TrackingURL": null,
+                    "ImageURL": "https://slcatsapi.tjc.tv/api/filehandler/getimage?id=6886830",
+                    "ExpectedDeliveryDate": null
+                },
+                {
+                    "SalesOrderCode": "DV00044547",
+                    "OrderStatus": "INVOICED",
+                    "TotalGrossAmount": "174.27",
+                    "OrderDate": "09/04/2025 06:22:57",
+                    "ItemCode": "6349383",
+                    "ItemName": "Set of 12 Large Size Jewelry Pouch (4\"x4.7\")",
+                    "ItemStatus": "PRINTED",
+                    "TrackingNumber": null,
+                    "NarvarStatus": null,
+                    "TrackingURL": null,
+                    "ImageURL": "https://slcatsapi.tjc.tv/api/filehandler/getimage?id=6349383",
+                    "ExpectedDeliveryDate": null
+                }
+            ]
+        }
+    },
+    "CA274e4ce803d1cd10710f0922960fe258": {
+        "user_details": [
+            {
+                "customer_id": "CUST1001",
+                "full_name": "Dhruv",
+                "phone_number": "8334263904",
+                "email": "dhruv@holbox.ai",
+                "shipping_address": "123 Main St, Delhi",
+                "created_at": "2025-08-29T12:41:08.336906",
+                "last_active": "2025-08-20T00:00:00",
+                "loyalty_tier": "Gold",
+                "notes": "Prefers COD"
+            }
+        ],
+        "orders": {
+            "ReturnCode": 1,
+            "Message": "Success",
+            "Data": [
+                {
+                    "SalesOrderCode": "DV00044549",
+                    "TotalGrossAmount": 54.11,
+                    "OrderDate": "2025-09-04T06:27:01",
+                    "OrderStatus": "Dispatched",
+                    "ImageURL": "https://slcatsapi.tjc.tv/api/filehandler/getimage?id=7340138"
+                },
+                {
+                    "SalesOrderCode": "DV00044547",
+                    "TotalGrossAmount": 174.27,
+                    "OrderDate": "2025-09-04T06:22:57",
+                    "OrderStatus": "INVOICED",
+                    "ImageURL": "https://slcatsapi.tjc.tv/api/filehandler/getimage?id=6886830"
+                }
+            ]
+        }
+    }
+}

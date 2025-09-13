@@ -174,7 +174,7 @@ MODEL_NAME = "gemini-2.5-flash-image-preview"
 load_dotenv()
 
 
-def virtual_tryon(jewellery_image: str, recipient_email :str, recipient_name : str,output_dir: str = "/home/ubuntu/virtual_tryon") -> str:
+async def virtual_tryon(jewellery_image: str, recipient_email :str, recipient_name : str,call_sid:str=None,output_dir: str = "/home/ubuntu/virtual_tryon") -> str:
     """
     Creates a virtual try-on image by combining a model photo with a jewellery image.
 

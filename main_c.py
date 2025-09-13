@@ -7,33 +7,34 @@ import ssl
 import inspect
 import os
 from dotenv import load_dotenv
-from db_functions import get_access_token,get_user_details,fetch_orders,get_order_information
+import cache
+# from cache import get_access_token,get_user_details,fe, _user_cache, _inflight_tasks
 load_dotenv()
 
 
 
 # Store connected frontend clients
-frontend_clients = set()
+# frontend_clients = set()
 global full_transcript
-prev_transcript = ""
-last_partial_print = ""
+# prev_transcript = ""
+# last_partial_print = ""
 active_calls = {}
 
-user_info_json= "/home/ubuntu/shoplc_voice/user_info.json"
-user_info = {}
+# user_info_json= "/home/ubuntu/shoplc_voice/user_info.json"
+# user_info = {}
 
-async def broadcast_to_frontend(data):
-    if not frontend_clients:
-        return
-    message = json.dumps(data)
-    disconnected = []
-    for ws in list(frontend_clients):
-        try:
-            await ws.send(message)
-        except Exception:
-            disconnected.append(ws)
-    for ws in disconnected:
-        frontend_clients.remove(ws)
+# async def broadcast_to_frontend(data):
+#     if not frontend_clients:
+#         return
+#     message = json.dumps(data)
+#     disconnected = []
+#     for ws in list(frontend_clients):
+#         try:
+#             await ws.send(message)
+#         except Exception:
+#             disconnected.append(ws)
+#     for ws in disconnected:
+#         frontend_clients.remove(ws)
 
 
 def sts_connect():
@@ -48,26 +49,33 @@ def sts_connect():
     return sts_ws
 
 def load_config():
-    with open("config.json", "r") as f:
+    with open("config_main.json", "r") as f:
         return json.load(f)
 
-def execute_function_call(func_name, arguments, call_sid=None):
-    if func_name not in FUNCTION_MAP:
+async def execute_function_call(func_name, arguments, call_sid=None):
+    if func_name not in cache.FUNCTION_MAP:
         result = {"error": f"Unknown function: {func_name}"}
         print(result)
         return result
     
-    func = FUNCTION_MAP[func_name]
+    if call_sid == None:
+        raise ValueError("Call sid is NUll")
+    
+    func = cache.FUNCTION_MAP[func_name]
 
     sig = inspect.signature(func)
     print(f" Active calls ------------------{active_calls}")
     if call_sid and call_sid in active_calls:
         if "phone_number" in sig.parameters:
-            print(active_calls[call_sid]["from"])
-            arguments["phone_number"] = active_calls[call_sid]["from"]
+        print(active_calls[call_sid]["from"])
+        arguments["phone_number"] = active_calls[call_sid]["from"]
+        arguments["call_sid"] = call_sid
 
     try:
-        result = func(**arguments)
+        if inspect.iscoroutinefunction(func):
+            result = await func(**arguments)   # ✅ await async function
+        else:
+            result = func(**arguments)         # sync function
         print(f"Function call result: {result}")
         return result
     except Exception as e:
@@ -90,7 +98,7 @@ async def handle_function_call_request(decoded, sts_ws,callsid):
             arguments = json.loads(function_call["arguments"])
             print(f"Function call: {func_name} (ID: {func_id}), arguments: {arguments}")
 
-            result = execute_function_call(func_name, arguments,callsid)
+            result = await execute_function_call(func_name, arguments,callsid)
 
             function_result = create_function_call_response(func_id, func_name, result)
             await sts_ws.send(json.dumps(function_result))
@@ -125,24 +133,24 @@ async def handle_full_transcript(decoded, twilio_ws, streamsid, callsid):
             full_transcript += content
             # print(full_transcript)
 
-            await broadcast_to_frontend({
-                "type": "transcription",
-                "data": {
-                    "call_sid": callsid,
-                    "message": full_transcript
-                }
-            })
+            # await broadcast_to_frontend({
+            #     "type": "transcription",
+            #     "data": {
+            #         "call_sid": callsid,
+            #         "message": full_transcript
+            #     }
+            # })
 
         elif role == 'assistant' and content:
             print(f"\033[94mAssistant:\033[0m {content}")  # Blue
 
-            await broadcast_to_frontend({
-                "type": "ai_response",
-                "data": {
-                    "call_sid": callsid,
-                    "message": content
-                }
-            })
+            # await broadcast_to_frontend({
+            #     "type": "ai_response",
+            #     "data": {
+            #         "call_sid": callsid,
+            #         "message": content
+            #     }
+            # })
 
 
 
@@ -156,7 +164,7 @@ async def handle_text_message(decoded, twilio_ws, sts_ws, streamsid, callsid):
 async def twilio_handler(twilio_ws):
     audio_queue = asyncio.Queue()
     streamsid_queue = asyncio.Queue()
-
+    await cache.init_cache() 
     async with sts_connect() as sts_ws:
         config_message = load_config()
 
@@ -184,16 +192,16 @@ async def twilio_handler(twilio_ws):
             callee = start_info.get("to", "AI Agent")
             
             # Notify frontend about new call with all details
-            await broadcast_to_frontend({
-                "type": "incoming_call",
-                "data": {
-                    "CallSid": callsid,
-                    "From": caller,  # Include caller number
-                    "To": callee,   # Include callee number
-                    "status": "in_progress",
-                    "messages": []
-                }
-            })
+            # await broadcast_to_frontend({
+            #     "type": "incoming_call",
+            #     "data": {
+            #         "CallSid": callsid,
+            #         "From": caller,  # Include caller number
+            #         "To": callee,   # Include callee number
+            #         "status": "in_progress",
+            #         "messages": []
+            #     }
+            # })
 
             async for message in sts_ws:
                 if isinstance(message, str):
@@ -247,23 +255,28 @@ async def twilio_handler(twilio_ws):
                         print("from_number:", from_number)
                         print("to_number:", to_number)
 
-                        if os.path.exists(user_info_json):
-                            user_info = await asyncio.to_thread(
-                                    lambda: json.load(open(user_info_json, 'r', encoding="UTF-8"))
-                                )
-            
-                        access_token = await get_access_token()
-                        user_details = await get_user_details(from_number.replace("+1","",1).strip())
-                        orders = await fetch_orders(from_number.replace("+1","",1).strip())
+                        await cache.get_access_token()
+                        await cache.get_user_details(from_number.replace("+1","",1).strip(),call_sid)
+                        await cache.fetch_orders(from_number.replace("+1","",1).strip(),call_sid)
                     
-                        user_info["user_details"] = user_details
-                        user_info["orders"] = orders
 
-                        async def write_json():
-                            with open(user_info_json, 'w', encoding="UTF-8") as f:
-                                json.dump(user_info, f, ensure_ascii=False, indent=4)
+                        # if os.path.exists(user_info_json):
+                        #     user_info = await asyncio.to_thread(
+                        #             lambda: json.load(open(user_info_json, 'r', encoding="UTF-8"))
+                        #         )
+            
+                        # access_token = await get_access_token()
+                        # user_details = await get_user_details(from_number.replace("+1","",1).strip())
+                        # orders = await fetch_orders(from_number.replace("+1","",1).strip())
+                    
+                        # user_info["user_details"] = user_details
+                        # user_info["orders"] = orders
 
-                        await asyncio.to_thread(write_json)
+                        # async def write_json():
+                        #     with open(user_info_json, 'w', encoding="UTF-8") as f:
+                        #         json.dump(user_info, f, ensure_ascii=False, indent=4)
+
+                        # await asyncio.to_thread(write_json)
 
                         streamsid_queue.put_nowait({
                             "streamSid": data["start"]["streamSid"],
@@ -286,13 +299,13 @@ async def twilio_handler(twilio_ws):
                                 del inbuffer[:BUFFER_SIZE]
 
                     elif event_type == "stop":
-                        await broadcast_to_frontend({
-                            "type": "call_status",
-                            "data": {
-                                "CallSid": data["stop"]["callSid"],
-                                "CallStatus": "completed"
-                            }
-                        })
+                        # await broadcast_to_frontend({
+                        #     "type": "call_status",
+                        #     "data": {
+                        #         "CallSid": data["stop"]["callSid"],
+                        #         "CallStatus": "completed"
+                        #     }
+                        # })
                         break
 
                 except Exception as e:
