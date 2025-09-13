@@ -67,9 +67,9 @@ async def execute_function_call(func_name, arguments, call_sid=None):
     print(f" Active calls ------------------{active_calls}")
     if call_sid and call_sid in active_calls:
         if "phone_number" in sig.parameters:
-        print(active_calls[call_sid]["from"])
-        arguments["phone_number"] = active_calls[call_sid]["from"]
-        arguments["call_sid"] = call_sid
+            print(active_calls[call_sid]["from"])
+            arguments["phone_number"] = active_calls[call_sid]["from"]
+            arguments["call_sid"] = call_sid
 
     try:
         if inspect.iscoroutinefunction(func):
